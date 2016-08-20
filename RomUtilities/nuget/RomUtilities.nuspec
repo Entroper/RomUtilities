@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>RomUtilities</id>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <title>RomUtilities</title>
     <authors>Entroper</authors>
     <owners>Entroper</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/Entroper/RomUtilities</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Utilities for reading and writing ROM files.</description>
-    <releaseNotes>First release.  Basic utilities.</releaseNotes>
+    <releaseNotes>Added some blob array conversions.</releaseNotes>
     <copyright>Copyright 2016</copyright>
     <tags>NES SNES ROM</tags>
   </metadata>

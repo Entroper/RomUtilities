@@ -22,8 +22,47 @@ namespace RomUtilities
 		public byte[] ToBytes()
 		{
 			var copy = new byte[_data.Length];
+			_data.CopyTo(copy, 0); // Array.CopyTo is ever so slightly faster than Buffer.BlockCopy.
 
-			_data.CopyTo(copy, 0);
+			return copy;
+		}
+
+		public sbyte[] ToSBytes()
+		{
+			var copy = new sbyte[_data.Length];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length);
+
+			return copy;
+		}
+
+		public ushort[] ToUShorts()
+		{
+			var copy = new ushort[_data.Length / 2];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 2);
+
+			return copy;
+		}
+
+		public short[] ToShorts()
+		{
+			var copy = new short[_data.Length / 2];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 2);
+
+			return copy;
+		}
+
+		public ulong[] ToULongs()
+		{
+			var copy = new ulong[_data.Length / 4];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
+
+			return copy;
+		}
+
+		public long[] ToLongs()
+		{
+			var copy = new long[_data.Length / 4];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
 
 			return copy;
 		}
@@ -117,7 +156,6 @@ namespace RomUtilities
 		public static Blob Random(int byteCount)
 		{
 			var data = new byte[byteCount];
-
 			new RNGCryptoServiceProvider().GetBytes(data);
 
 			return new Blob(data);
