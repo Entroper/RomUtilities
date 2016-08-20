@@ -11,7 +11,7 @@ namespace RomUtilities
 	{
 		private readonly byte[] _data;
 
-		public Blob(byte[] data)
+		private Blob(byte[] data)
 		{
 			_data = data;
 		}
@@ -51,20 +51,92 @@ namespace RomUtilities
 			return copy;
 		}
 
+		public uint[] ToUInts()
+		{
+			var copy = new uint[_data.Length / 4];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
+
+			return copy;
+		}
+
+		public int[] ToInts()
+		{
+			var copy = new int[_data.Length / 4];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
+
+			return copy;
+		}
+
 		public ulong[] ToULongs()
 		{
-			var copy = new ulong[_data.Length / 4];
-			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
+			var copy = new ulong[_data.Length / 8];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 8);
 
 			return copy;
 		}
 
 		public long[] ToLongs()
 		{
-			var copy = new long[_data.Length / 4];
-			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 4);
+			var copy = new long[_data.Length / 8];
+			Buffer.BlockCopy(_data, 0, copy, 0, copy.Length * 8);
 
 			return copy;
+		}
+
+		public static Blob FromSBytes(sbyte[] values)
+		{
+			var bytes = new byte[values.Length];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromUShorts(ushort[] values)
+		{
+			var bytes = new byte[values.Length * 2];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromShorts(short[] values)
+		{
+			var bytes = new byte[values.Length * 2];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromUInts(uint[] values)
+		{
+			var bytes = new byte[values.Length * 4];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromInts(int[] values)
+		{
+			var bytes = new byte[values.Length * 4];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromULongs(ulong[] values)
+		{
+			var bytes = new byte[values.Length*8];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
+		}
+
+		public static Blob FromLongs(long[] values)
+		{
+			var bytes = new byte[values.Length*8];
+			Buffer.BlockCopy(values, 0, bytes, 0, bytes.Length);
+
+			return bytes;
 		}
 
 		//
