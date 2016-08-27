@@ -12,7 +12,8 @@ namespace RomUtilities
 		{
 			public U Item { get; }
 			public List<int> Edges { get; }
-			public bool Mark { get; set; }
+			public bool TemporaryMark { get; set; }
+			public bool PermanentMark { get; set; }
 
 			public Node(U item)
 			{
@@ -53,12 +54,18 @@ namespace RomUtilities
 		{
 			foreach (var node in _nodes)
 			{
-				_nodes.ForEach(n => node.Mark = false);
+				_nodes.ForEach(n =>
+				{
+					node.TemporaryMark = false;
+					node.PermanentMark = false;
+				});
 
 				if (FindCycle(node))
 				{
 					return true;
 				}
+
+				node.PermanentMark = true;
 			}
 
 			return false;
@@ -66,14 +73,24 @@ namespace RomUtilities
 
 		private bool FindCycle(Node<T> node)
 		{
-			if (node.Mark)
+			if (node.PermanentMark)
+			{
+				return false;
+			}
+			if (node.TemporaryMark)
 			{
 				return true;
 			}
 
-			node.Mark = true;
+			node.TemporaryMark = true;
 
-			return node.Edges.Any(edge => FindCycle(_nodes[edge]));
+			if (node.Edges.Any(edge => FindCycle(_nodes[edge])))
+			{
+				return true;
+			}
+
+			node.TemporaryMark = false;
+			return false;
 		}
 	}
 }

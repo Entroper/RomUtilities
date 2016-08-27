@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +16,15 @@ namespace RomUtilities
 		private readonly uint[] _state = new uint[N];
 		private uint _index;
 
-		private readonly uint[] _register = new uint[2]; 
+		private readonly uint[] _register = new uint[2];
+
+		public static MT19337 New()
+		{
+			var seedBytes = new byte[4];
+			new RNGCryptoServiceProvider().GetBytes(seedBytes);
+
+			return new MT19337(BitConverter.ToUInt32(seedBytes, 0));
+		}
 
 		public MT19337(uint seed)
 		{

@@ -195,6 +195,12 @@ namespace RomUtilities
 			return new Blob(data);
 		}
 
+		// Prefer strongly-typed version of IndexOf to protect against calls that LOOK like implicit conversions, but aren't.
+		public int IndexOf(byte find)
+		{
+			return Array.IndexOf(_data, find);
+		}
+
 		public List<Blob> Split(byte separator)
 		{
 			var segments = new List<Blob>();
