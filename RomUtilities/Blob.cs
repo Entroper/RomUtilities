@@ -17,7 +17,6 @@ namespace RomUtilities
 		}
 
 		public int Length => _data.Length;
-		public long LongLength => _data.LongLength;
 
 		public byte[] ToBytes()
 		{
@@ -234,7 +233,7 @@ namespace RomUtilities
 		public static Blob Random(int byteCount)
 		{
 			var data = new byte[byteCount];
-			new RNGCryptoServiceProvider().GetBytes(data);
+            RandomNumberGenerator.Create().GetBytes(data);
 
 			return new Blob(data);
 		}

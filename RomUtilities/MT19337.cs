@@ -21,7 +21,7 @@ namespace RomUtilities
 		public static MT19337 New()
 		{
 			var seedBytes = new byte[4];
-			new RNGCryptoServiceProvider().GetBytes(seedBytes);
+            RandomNumberGenerator.Create().GetBytes(seedBytes);
 
 			return new MT19337(BitConverter.ToUInt32(seedBytes, 0));
 		}
