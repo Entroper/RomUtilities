@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
-    <Version>1.4.0</Version>
+    <TargetFrameworks>netstandard1.6;net452</TargetFrameworks>
+    <Version>1.4.2</Version>
     <Authors>Entroper</Authors>
     <Company />
     <Description>Utilities for reading and writing ROM files.</Description>
@@ -12,11 +12,16 @@
     <RepositoryUrl>https://github.com/Entroper/RomUtilities</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>rom nes snes</PackageTags>
-    <PackageReleaseNotes>Converted to .NET Standard 1.6.</PackageReleaseNotes>
+    <PackageReleaseNotes>Target multiple frameworks to support .NET Standard 1.6 as originally intended.</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard1.6|AnyCPU'">
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
     <TreatSpecificWarningsAsErrors />
   </PropertyGroup>
