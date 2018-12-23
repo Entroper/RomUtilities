@@ -208,9 +208,17 @@ namespace RomUtilities
 			do
 			{
 				index = Array.IndexOf(copy, separator);
-				segments.Add(copy.SubBlob(0, index));
-				copy = copy.SubBlob(index + 1);
-			} while (index != -1);
+                if (index >= 0)
+                {
+                    segments.Add(copy.SubBlob(0, index));
+                    copy = copy.SubBlob(index + 1);
+                }
+            } while (index != -1);
+
+            if (copy.Length > 0)
+            {
+                segments.Add(copy);
+            }
 
 			return segments;
 		}
