@@ -200,6 +200,61 @@ namespace RomUtilities
 			return Array.IndexOf(_data, find);
 		}
 
+		public int IndexOf(Blob other, int startIndex = 0)
+        {
+			for (int i = startIndex; i < Length - other.Length; i++)
+            {
+				int j = 0;
+				while (j < other.Length && _data[i + j] == other[j])
+					j++;
+
+				if (j == other.Length)
+					return i;
+            }
+
+			return -1;
+        }
+
+		public void ReplaceInPlace(Blob search, Blob replace)
+        {
+			if (search.Length != replace.Length)
+				throw new ArgumentException("Search and replace blobs must be the same length for in-place replacement.");
+
+			int startIndex = 0;
+			do
+			{
+				startIndex = IndexOf(search, startIndex);
+				if (startIndex == -1)
+					break;
+
+				for (int i = startIndex; i < startIndex + search.Length; i++)
+					_data[i + startIndex] = replace[i];
+
+				startIndex += replace.Length;
+			} while (startIndex < Length - search.Length);
+        }
+
+		public Blob ReplaceOutOfPlace(Blob search, Blob replace)
+        {
+			Blob ret = Blob.FromHex("");
+			int startIndex = 0;
+			do
+			{
+				int found = IndexOf(search, startIndex);
+				if (found == -1)
+				{
+					break;
+				}
+
+				ret += SubBlob(startIndex, found - startIndex);
+				ret += replace;
+
+				startIndex = found + replace.Length;
+			} while (startIndex < Length - search.Length);
+
+			return ret + SubBlob(startIndex);
+		}
+
 		public List<Blob> Split(byte separator)
 		{
 			var segments = new List<Blob>();
