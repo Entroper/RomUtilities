@@ -202,7 +202,7 @@ namespace RomUtilities
 
 		public int IndexOf(Blob other, int startIndex = 0)
         {
-			for (int i = startIndex; i < Length - other.Length; i++)
+			for (int i = startIndex; i <= Length - other.Length; i++)
             {
 				int j = 0;
 				while (j < other.Length && _data[i + j] == other[j])
@@ -227,8 +227,8 @@ namespace RomUtilities
 				if (startIndex == -1)
 					break;
 
-				for (int i = startIndex; i < startIndex + search.Length; i++)
-					_data[i + startIndex] = replace[i];
+				for (int i = 0; i < replace.Length; i++)
+					_data[startIndex + i] = replace[i];
 
 				startIndex += replace.Length;
 			} while (startIndex < Length - search.Length);
@@ -249,7 +249,7 @@ namespace RomUtilities
 				ret += SubBlob(startIndex, found - startIndex);
 				ret += replace;
 
-				startIndex = found + replace.Length;
+				startIndex = found + search.Length;
 			} while (startIndex < Length - search.Length);
 
 			return ret + SubBlob(startIndex);
