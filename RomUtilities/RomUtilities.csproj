@@ -8,12 +8,12 @@
     <Description>Utilities for reading and writing ROM files.</Description>
     <Copyright>2020</Copyright>
     <PackageProjectUrl>https://github.com/Entroper/RomUtilities</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/Entroper/RomUtilities/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/Entroper/RomUtilities</RepositoryUrl>
     <RepositoryType>Github</RepositoryType>
     <PackageTags>rom nes snes</PackageTags>
     <PackageReleaseNotes>Target netstandard2.0.</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,5 +22,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
