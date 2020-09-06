@@ -7,26 +7,43 @@ using System.Threading.Tasks;
 
 namespace RomUtilities
 {
-    public abstract class NesRom : Rom
-    {
-	    public NesRom(string filename)
-	    {
-		    Load(filename);
-	    }
+	public abstract class NesRom : Rom
+	{
+		protected NesRom()
+		{ }
 
-	    public sealed override void Load(string filename)
-	    {
-			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				var headerLength = (int)fs.Length % 8192;
-				var dataLength = (int)fs.Length - headerLength;
+		public NesRom(Stream romStream)
+		{
+			Load(romStream);
+		}
 
-				Data = new byte[dataLength];
-				Header = new byte[headerLength];
+		public NesRom(string filename)
+		{
+			Load(filename);
+		}
 
-				fs.Read(Header, 0, headerLength);
-				fs.Read(Data, 0, dataLength);
-			}
+		public sealed override void Load(Stream readStream)
+		{
+			var headerLength = (int)readStream.Length % 8192;
+			var dataLength = (int)readStream.Length - headerLength;
+
+			Data = new byte[dataLength];
+			Header = new byte[headerLength];
+
+			readStream.ReadLength(Header, 0, headerLength);
+			readStream.ReadLength(Data, 0, dataLength);
+		}
+
+		public sealed override async Task LoadAsync(Stream readStream)
+		{
+			var headerLength = (int)readStream.Length % 8192;
+			var dataLength = (int)readStream.Length - headerLength;
+
+			Data = new byte[dataLength];
+			Header = new byte[headerLength];
+
+			await readStream.ReadLengthAsync(Header, 0, headerLength);
+			await readStream.ReadLengthAsync(Data, 0, dataLength);
 		}
 	}
 }

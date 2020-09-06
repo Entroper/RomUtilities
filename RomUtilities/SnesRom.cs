@@ -9,24 +9,41 @@ namespace RomUtilities
 {
 	public abstract class SnesRom : Rom
 	{
+		protected SnesRom()
+		{ }
+
+		public SnesRom(Stream readStream)
+		{
+			Load(readStream);
+		}
+
 		public SnesRom(string filename)
 		{
 			Load(filename);
 		}
 
-		public sealed override void Load(string filename)
+		public sealed override void Load(Stream readStream)
 		{
-			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
-			{
-				var headerLength = (int)fs.Length % 131072;
-				var dataLength = (int)fs.Length - headerLength;
+			var headerLength = (int)readStream.Length % 131072;
+			var dataLength = (int)readStream.Length - headerLength;
 
-				Data = new byte[dataLength];
-				Header = new byte[headerLength];
+			Data = new byte[dataLength];
+			Header = new byte[headerLength];
 
-				fs.Read(Header, 0, headerLength);
-				fs.Read(Data, 0, dataLength);
-			}
+			readStream.Read(Header, 0, headerLength);
+			readStream.Read(Data, 0, dataLength);
+		}
+
+		public sealed override async Task LoadAsync(Stream readStream)
+		{
+			var headerLength = (int)readStream.Length % 131072;
+			var dataLength = (int)readStream.Length - headerLength;
+
+			Data = new byte[dataLength];
+			Header = new byte[headerLength];
+
+			await readStream.ReadAsync(Header, 0, headerLength);
+			await readStream.ReadAsync(Data, 0, dataLength);
 		}
 	}
 }

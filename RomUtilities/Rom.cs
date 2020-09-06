@@ -18,14 +18,54 @@ namespace RomUtilities
 			set { Data[index] = value; }
 		}
 
-		public abstract void Load(string filename);
+		public int HeaderLength => Header.Length;
+		public int DataLength => Data.Length;
+		public int TotalLength => Header.Length + Data.Length;
+
+		public abstract void Load(Stream readStream);
+		public abstract Task LoadAsync(Stream readStream);
+
+		public void Load(string filename)
+		{
+			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+			{
+				Load(fs);
+			}
+		}
+
+		public async Task LoadAsync(string filename)
+		{
+			using (var fs = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read))
+			{
+				await LoadAsync(fs);
+			}
+		}
+
+		public void Save(Stream writeStream)
+		{
+			writeStream.Write(Header, 0, Header.Length);
+			writeStream.Write(Data, 0, Data.Length);
+		}
+
+		public async Task SaveAsync(Stream writeStream)
+		{
+			await writeStream.WriteAsync(Header, 0, Header.Length);
+			await writeStream.WriteAsync(Data, 0, Data.Length);
+		}
 
 		public void Save(string filename)
 		{
 			using (var fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
 			{
-				fs.Write(Header, 0, Header.Length);
-				fs.Write(Data, 0, Data.Length);
+				Save(fs);
+			}
+		}
+
+		public async Task SaveAsync(string filename)
+		{
+			using (var fs = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None))
+			{
+				await SaveAsync(fs);
 			}
 		}
 
